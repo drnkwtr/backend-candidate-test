@@ -20,6 +20,6 @@ class ImportCsvAds extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
+        return 1;
     }
 }
