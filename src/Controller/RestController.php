@@ -6,7 +6,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpNotFoundException;
-use Slim\Psr7\Stream;
 
 abstract class RestController
 {
@@ -50,31 +49,10 @@ abstract class RestController
         return $newResponse->withStatus($statusCode);
     }
 
+    // TODO: Реализовать метод для подгрузки xlsx
     protected function respondWithFileXlsx($filePath, $outputName = null, int $statusCode = 200): ResponseInterface
     {
 
-        $size = filesize($filePath);
-        $path_parts = pathinfo($filePath);
-        $ext = strtolower($path_parts["extension"]);
-
-        if(!$outputName) {
-            $outputName = $path_parts["basename"];
-        } else {
-            if(count(explode('.', $outputName)) <= 1){
-                $outputName = $outputName.'.'.$ext;
-            }
-        }
-
-        return $this->response
-            ->withHeader('Content-Transfer-Encoding', 'UTF-8')
-            ->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            ->withHeader("Content-Disposition",'attachment; filename='.'"'.$outputName.'"')
-            ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
-            ->withHeader('Pragma', 'public')
-            ->withHeader('expires', 0)
-            ->withHeader("Content-length", $size)
-            ->withBody((new Stream(fopen($filePath, 'r'))))
-            ->withStatus($statusCode);
     }
 
     protected function respondWithError(int $errorCode, mixed $errorMessage = null): ResponseInterface

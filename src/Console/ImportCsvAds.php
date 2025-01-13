@@ -18,6 +18,7 @@ class ImportCsvAds extends Command
 
     }
 
+    // TODO: Реализовать алгоритм для обработки файла ads.xlsx
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         return 1;
