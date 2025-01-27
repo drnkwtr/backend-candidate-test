@@ -6,35 +6,44 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ads extends Model
 {
+    protected $table = 'ads';
+    public $timestamps = false;
     protected $fillable = [
+        'ad_id',
         'name',
         'campaign_id',
-        'set_id',
+        'adset_id',
         'cost',
         'impressions',
         'clicks',
         'date',
     ];
 
-    public static function addSingle($attributes, $values)
+    public static function addSingle($data)
     {
-        self::query()->updateOrCreate($attributes, $values);
+        self::query()->updateOrCreate(
+            [
+                'id' => $data['ad_id'],
+                'adset_id' => $data['adset_id'],
+                'campaign_id' => $data['campaign_id'],
+                'date' => $data['date'],
+            ], $data);
     }
 
-    public static function addMultiple($attributes, $values)
+    public static function addMultiple($data)
     {
-        foreach ($values as $value) {
-            self::addSingle($attributes, $value);
+        foreach ($data as $item) {
+            self::addSingle($item);
         }
     }
 
     public static function removeSingle($data)
     {
-        return self::query()->where($data)->delete();
+        return self::query()->where('id', $data['id'])->delete();
     }
 
     public static function updateSingle($data, $updated_data)
     {
-        return self::query()->where($data)->update($updated_data);
+        return self::query()->where('id', $data['id'])->update($data);
     }
 }
