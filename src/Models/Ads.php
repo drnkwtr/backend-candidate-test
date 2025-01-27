@@ -23,7 +23,7 @@ class Ads extends Model
     {
         self::query()->updateOrCreate(
             [
-                'id' => $data['ad_id'],
+                'ad_id' => $data['ad_id'],
                 'adset_id' => $data['adset_id'],
                 'campaign_id' => $data['campaign_id'],
                 'date' => $data['date'],
